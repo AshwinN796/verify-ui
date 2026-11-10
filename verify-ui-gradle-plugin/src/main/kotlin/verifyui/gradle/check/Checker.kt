@@ -63,6 +63,7 @@ object Checker {
         val toggleState: String?,
         val clickable: Boolean,
         val textLayout: TextLayout?,
+        val scrollable: Boolean = false,
     ) {
         val ownLabel: String? get() = text ?: contentDescription
     }
@@ -88,6 +89,18 @@ object Checker {
                 stack.addAll(children[c.id].orEmpty())
             }
             return out
+        }
+
+        private val byId = nodes.associateBy { it.id }
+
+        /** True if the node sits inside a scroll container (LazyColumn, verticalScroll, ...). */
+        fun inScrollContainer(n: Node): Boolean {
+            var p = n.parent?.let { byId[it] }
+            while (p != null) {
+                if (p.scrollable) return true
+                p = p.parent?.let { byId[it] }
+            }
+            return false
         }
 
         fun labelOf(n: Node): String? = n.ownLabel ?: descendants(n).firstNotNullOfOrNull { it.ownLabel }
@@ -159,9 +172,17 @@ object Checker {
             val ub = n.unclipped
             val visible = w(b) > 0.5 && h(b) > 0.5
 
-            if ((n.clickable || n.text != null) && (!visible || w(ub) < 1 || h(ub) < 1)) {
+            if ((n.clickable || n.text != null) && (w(ub) < 1 || h(ub) < 1)) {
                 out += finding("collapsed", "error", d, n,
-                    "${describe(d, n)} has zero visible size; it is squeezed out of the layout.")
+                    "${describe(d, n)} was measured at zero size; it is squeezed out of the layout.")
+                continue
+            }
+            if ((n.clickable || n.text != null) && !visible) {
+                // Laid out at a real size but not visible: scrolled out of view is fine, clipped away is not.
+                if (!d.inScrollContainer(n)) {
+                    out += finding("text_clipped", "error", d, n,
+                        "${describe(d, n)} is fully hidden by a parent that clips it.")
+                }
                 continue
             }
 
@@ -380,6 +401,7 @@ object Checker {
                 toggleState = n["toggleState"] as String?,
                 clickable = n["clickable"] == true,
                 textLayout = tl,
+                scrollable = n["scrollable"] == true,
             )
         }
         val name = file.name.removeSuffix(".semantics.json")

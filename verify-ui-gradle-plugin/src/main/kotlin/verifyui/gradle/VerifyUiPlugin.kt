@@ -22,7 +22,7 @@ import java.io.File
  *
  *   plugins { id("io.github.ashwinn796.verify-ui") }
  *
- *   ./gradlew :app:verifyUi -PverifyUi.composable=OrderSummaryCard
+ *   ./gradlew :app:verifyUi -Pcomposable=OrderSummaryCard
  *
  * Renders every @Preview of that composable (the default preview also at 2x font, RTL and dark),
  * then writes build/verify-ui/<Composable>/report.json.
@@ -117,7 +117,10 @@ class VerifyUiPlugin : Plugin<Project> {
         val requested = project.gradle.startParameter.taskNames.any {
             it == "verifyUi" || it.endsWith(":verifyUi")
         }
-        val composableProp = project.providers.gradleProperty("verifyUi.composable").orElse("")
+        // -Pcomposable=Name (no dot: PowerShell splits "-Pa.b=c" at the dot). -PverifyUi.composable still works.
+        val composableProp = project.providers.gradleProperty("composable")
+            .orElse(project.providers.gradleProperty("verifyUi.composable"))
+            .orElse("")
         val outRoot = project.layout.buildDirectory.dir("verify-ui")
         val testTaskName = ext.variant.map { "test${it.replaceFirstChar(Char::uppercase)}UnitTest" }
 
@@ -146,7 +149,7 @@ class VerifyUiPlugin : Plugin<Project> {
         // 5. verifyUi: render, then check and report.
         project.tasks.register("verifyUi", VerifyUiReportTask::class.java) {
             group = "verification"
-            description = "Renders @Previews of -PverifyUi.composable=<Name> in all variants and writes report.json."
+            description = "Renders @Previews of -Pcomposable=<Name> in all variants and writes report.json."
             dependsOn(testTaskName)
             composable.set(composableProp)
             outputRoot.set(outRoot)

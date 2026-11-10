@@ -30,3 +30,4 @@ A run passes when every bug is reported, with no false positive on the controls.
 | 1   | 2026-11-10 | 10/11 | SR-3   | Edit TextButton touch target (fixed: layout size); SettingsRow dark contrast (fixed: previews wrap Surface) |
 | 2   | 2026-11-10 | 10/11 | SR-3   | none |
 | 3   | 2026-11-10 | agent `/ui-verify SettingsRow`: fixed SR-1, SR-2, SR-3, report pass | - | **Invalid as an agent eval**: source still had `// PLANTED` comments naming the fix. Comments removed; rerun needed. Agent output kept in `runs/run3-agent-SettingsRow.kt` |
+| 4   | 2026-11-10 | agent, fresh session, no hints: SettingsRow SR-1..3 fixed (pass); OrderSummaryCard OS-1..5 + bonus Pay clip fixed | - | Checker FP: LazyColumn items scrolled out of view reported as `collapsed` (fixed: scroll-aware). Agent overreach: Column -> LazyColumn not asked for (skill now requires minimal fixes) |

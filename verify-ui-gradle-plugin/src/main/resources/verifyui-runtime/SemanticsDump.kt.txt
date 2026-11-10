@@ -43,6 +43,9 @@ object SemanticsDump {
         c.getOrNull(SemanticsProperties.TestTag)?.let { f += "\"testTag\":${q(it)}" }
         if (c.contains(SemanticsActions.OnClick)) f += "\"clickable\":true"
         if (c.isMergingSemanticsOfDescendants) f += "\"mergesDescendants\":true"
+        if (c.contains(SemanticsProperties.VerticalScrollAxisRange) || c.contains(SemanticsProperties.HorizontalScrollAxisRange)) {
+            f += "\"scrollable\":true"
+        }
         c.getOrNull(SemanticsActions.GetTextLayoutResult)?.action?.let { getLayout ->
             val results = mutableListOf<TextLayoutResult>()
             if (getLayout(results) && results.isNotEmpty()) {

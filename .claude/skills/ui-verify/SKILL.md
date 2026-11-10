@@ -77,7 +77,7 @@ Rules:
 ## 4. Render and check
 
 ```
-./gradlew :<module>:verifyUi -PverifyUi.composable=<ComposableName>
+./gradlew :<module>:verifyUi -Pcomposable=<ComposableName>
 ```
 
 The task prints a summary and writes, under `<module>/build/verify-ui/<ComposableName>/`:
@@ -100,6 +100,10 @@ The task prints a summary and writes, under `<module>/build/verify-ui/<Composabl
    `heightIn(min = )` over `height()`, `weight()` on flexible text, start/end over left/right,
    `Modifier.toggleable` / `selectable` with a `Role` for rows that act as controls,
    `IconButton` (48dp) for icon actions.
+   Keep each fix minimal and local to the finding. Do not change structure that no finding
+   asks for (e.g. `Column` -> `LazyColumn`, new weights on containers, new parameters): it
+   changes behavior for every caller and can break the composable in other parents. If you
+   think a structural change is needed, propose it in the final report instead of making it.
 4. Run step 4 again. Stop when the status is `pass` and the images look right, or after
    5 rounds. If a fix would change the intended design (a fixed-size spec), stop and explain
    the trade-off instead of forcing it.

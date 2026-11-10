@@ -33,7 +33,7 @@ looks at the images, fixes the code and repeats until it passes.
 ## Use it without an agent
 
 ```
-./gradlew :app:verifyUi -PverifyUi.composable=OrderSummaryCard
+./gradlew :app:verifyUi -Pcomposable=OrderSummaryCard
 ```
 
 Output: `app/build/verify-ui/OrderSummaryCard/` with a PNG and semantics dump per state,

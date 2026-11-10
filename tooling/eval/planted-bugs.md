@@ -1,6 +1,7 @@
 # Planted bugs (answer key)
 
 The ground truth for the eval. The tool and the agent must never read this file.
+The sample sources carry no hint comments; bugs are documented only here.
 A run passes when every bug is reported, with no false positive on the controls.
 
 | ID   | Component        | Exposed in state | Bug                                                         | Expected signal from semantics/pixels                                   |
@@ -28,3 +29,4 @@ A run passes when every bug is reported, with no false positive on the controls.
 |-----|------------|-------|--------|-----------------|
 | 1   | 2026-11-10 | 10/11 | SR-3   | Edit TextButton touch target (fixed: layout size); SettingsRow dark contrast (fixed: previews wrap Surface) |
 | 2   | 2026-11-10 | 10/11 | SR-3   | none |
+| 3   | 2026-11-10 | agent `/ui-verify SettingsRow`: fixed SR-1, SR-2, SR-3, report pass | - | **Invalid as an agent eval**: source still had `// PLANTED` comments naming the fix. Comments removed; rerun needed. Agent output kept in `runs/run3-agent-SettingsRow.kt` |

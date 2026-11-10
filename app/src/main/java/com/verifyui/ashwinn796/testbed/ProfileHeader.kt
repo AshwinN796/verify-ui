@@ -33,7 +33,6 @@ fun ProfileHeader(
     onEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // PLANTED: absolute arrangement and padding, so the row does not mirror in RTL.
     Row(
         modifier
             .fillMaxWidth()
@@ -50,12 +49,9 @@ fun ProfileHeader(
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            // PLANTED: hard-coded near-black, unreadable on a dark surface.
             Text(name, color = Color(0xFF1C1B1F), style = MaterialTheme.typography.titleMedium)
-            // PLANTED: light grey on white, contrast far below 4.5:1.
             Text(subtitle, color = Color(0xFFC4C4C4), style = MaterialTheme.typography.bodyMedium)
         }
-        // Control: a correct Material button. Must NOT be flagged.
         TextButton(onClick = onEdit) { Text("Edit") }
     }
 }

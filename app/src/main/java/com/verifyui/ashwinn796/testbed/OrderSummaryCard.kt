@@ -45,12 +45,10 @@ fun OrderSummaryCard(
 
             items.forEach { item ->
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    // PLANTED: no weight on the name, so a long name squeezes the price.
                     Text(item.name, style = MaterialTheme.typography.bodyLarge)
                     Spacer(Modifier.width(8.dp))
                     Text(item.price, style = MaterialTheme.typography.bodyLarge)
                     Spacer(Modifier.weight(1f))
-                    // PLANTED: 24dp touch target and no accessible label.
                     val tint = MaterialTheme.colorScheme.onSurfaceVariant
                     Box(Modifier.size(24.dp).clickable { onRemoveItem(item) }) {
                         Canvas(Modifier.size(24.dp)) {
@@ -67,11 +65,9 @@ fun OrderSummaryCard(
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text("Total", style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.weight(1f))
-                // PLANTED: fixed height fits 1x font only; clips at large font scale.
                 Text(total, style = MaterialTheme.typography.titleMedium, modifier = Modifier.height(24.dp))
             }
 
-            // PLANTED: 36dp tall touch target (minimum is 48dp).
             Box(
                 Modifier
                     .fillMaxWidth()

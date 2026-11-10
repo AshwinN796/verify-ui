@@ -26,8 +26,6 @@ fun SettingsRow(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // PLANTED: fixed 56dp height clips the text at large font scale.
-    // PLANTED: plain clickable with no Role or toggle state; should be Modifier.toggleable(role = Role.Switch).
     Row(
         modifier
             .fillMaxWidth()
@@ -38,7 +36,6 @@ fun SettingsRow(
     ) {
         Column(Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.bodyLarge)
-            // PLANTED: single-line ellipsis hides most of a long description.
             Text(
                 description,
                 style = MaterialTheme.typography.bodyMedium,

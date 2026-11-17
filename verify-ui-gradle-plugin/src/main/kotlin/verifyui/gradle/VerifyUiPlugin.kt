@@ -185,10 +185,14 @@ private fun addUnitTestSources(variant: Any, dir: String) {
         }.getOrNull()
         ?: return // unit tests disabled for this variant
     val sources = unitTest.withGroovyBuilder { getProperty("sources") }!!
-    val flat = runCatching { sources.withGroovyBuilder { getProperty("kotlin") } }.getOrNull()
-        ?: sources.withGroovyBuilder { getProperty("java") }
-        ?: throw GradleException("verify-ui: cannot find unit-test source directories on ${variant}")
-    flat.withGroovyBuilder { "addStaticSourceDirectory"(dir) }
+    // AGP 8 + kotlin.android consumes sources.java; AGP 9 built-in Kotlin consumes sources.kotlin.
+    val java = runCatching { sources.withGroovyBuilder { getProperty("java") } }.getOrNull()
+    val kotlin = runCatching { sources.withGroovyBuilder { getProperty("kotlin") } }.getOrNull()
+    if (java == null && kotlin == null) {
+        throw GradleException("verify-ui: cannot find unit-test source directories on ${variant}")
+    }
+    java?.withGroovyBuilder { "addStaticSourceDirectory"(dir) }
+    kotlin?.withGroovyBuilder { "addStaticSourceDirectory"(dir) }
 }
 
 /** Copies the runtime sources bundled in the plugin jar into the module's test source set. */

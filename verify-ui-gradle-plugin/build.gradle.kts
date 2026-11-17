@@ -9,7 +9,7 @@ group = "io.github.ashwinn796"
 version = "0.1.0"
 
 gradlePlugin {
-    website = "https://github.com/AshwinN796/verify-ui/tree/main/verify-ui-gradle-plugin#readme"
+    website = "https://github.com/AshwinN796/verify-ui/tree/master/verify-ui-gradle-plugin#readme"
     vcsUrl = "https://github.com/AshwinN796/verify-ui.git"
     plugins {
         register("verifyUi") {

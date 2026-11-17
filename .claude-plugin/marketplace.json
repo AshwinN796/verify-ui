@@ -1,0 +1,15 @@
+{
+  "name": "ashwinn796",
+  "description": "Android and Jetpack Compose tools for Claude Code",
+  "owner": {
+    "name": "AshwinN796",
+    "url": "https://github.com/AshwinN796"
+  },
+  "plugins": [
+    {
+      "name": "verify-ui",
+      "source": "./plugins/verify-ui",
+      "description": "Render Compose @Previews in every state, check them for layout and accessibility bugs, and fix them."
+    }
+  ]
+}

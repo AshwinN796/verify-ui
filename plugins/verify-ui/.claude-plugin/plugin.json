@@ -1,0 +1,13 @@
+{
+  "name": "verify-ui",
+  "version": "0.1.0",
+  "description": "Gives Claude eyes for Jetpack Compose: renders your @Previews in every state (2x font, RTL, dark), checks them for layout and accessibility bugs, and fixes them until they pass.",
+  "author": {
+    "name": "AshwinN796",
+    "url": "https://github.com/AshwinN796"
+  },
+  "homepage": "https://github.com/AshwinN796/verify-ui",
+  "repository": "https://github.com/AshwinN796/verify-ui",
+  "license": "MIT",
+  "keywords": ["android", "jetpack-compose", "screenshot-testing", "accessibility", "ui-testing"]
+}

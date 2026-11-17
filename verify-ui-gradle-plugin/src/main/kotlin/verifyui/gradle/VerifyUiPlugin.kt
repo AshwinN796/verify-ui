@@ -28,7 +28,11 @@ import java.io.File
  * then writes build/verify-ui/<Composable>/report.json.
  */
 abstract class VerifyUiExtension {
-    /** Build variant whose unit tests render the previews. */
+    /**
+     * Build variant whose unit tests render the previews, e.g. "debug" or "prodDebug".
+     * Unset: "debug" if the module has no flavors, otherwise the first <flavor>Debug variant.
+     * Override per run with -PverifyUiVariant=prodDebug.
+     */
     abstract val variant: Property<String>
 
     /** Packages scanned for @Preview functions. Defaults to android.namespace. */
@@ -47,7 +51,6 @@ class VerifyUiPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val ext = project.extensions.create("verifyUi", VerifyUiExtension::class.java).apply {
-            variant.convention("debug")
             robolectricSdk.convention(36)
             robolectricVersion.convention("4.16.1")
             roborazziVersion.convention("1.58.0")
@@ -122,7 +125,22 @@ class VerifyUiPlugin : Plugin<Project> {
             .orElse(project.providers.gradleProperty("verifyUi.composable"))
             .orElse("")
         val outRoot = project.layout.buildDirectory.dir("verify-ui")
-        val testTaskName = ext.variant.map { "test${it.replaceFirstChar(Char::uppercase)}UnitTest" }
+        val variantOverride = project.providers.gradleProperty("verifyUiVariant")
+        val testTaskName = project.provider {
+            val explicit = variantOverride.orNull ?: ext.variant.orNull
+            if (explicit != null) {
+                "test${explicit.replaceFirstChar(Char::uppercase)}UnitTest"
+            } else {
+                val names = project.tasks.names
+                names.firstOrNull { it == "testDebugUnitTest" }
+                    ?: names.filter { Regex("test\\w+DebugUnitTest").matches(it) }.sorted().firstOrNull()
+                    ?: throw GradleException(
+                        "verify-ui: no debug unit-test task in ${project.path}. Set the variant explicitly: " +
+                            "verifyUi { variant = \"<flavor>Debug\" } or -PverifyUiVariant=<flavor>Debug. " +
+                            "Unit-test tasks found: ${names.filter { it.endsWith("UnitTest") && it.startsWith("test") }}",
+                    )
+            }
+        }
 
         project.tasks.withType(Test::class.java).configureEach {
             if (requested && name == testTaskName.get()) {

@@ -80,6 +80,9 @@ Rules:
 ./gradlew :<module>:verifyUi -Pcomposable=<ComposableName>
 ```
 
+In a module with product flavors the plugin uses the first `<flavor>Debug` variant; to pick one,
+add `-PverifyUiVariant=prodDebug` (or set `verifyUi { variant = "prodDebug" }` in the module).
+
 The task prints a summary and writes, under `<module>/build/verify-ui/<ComposableName>/`:
 - `<state>.png` and `<state>.semantics.json` for every preview,
 - `default__font_2x`, `default__rtl`, `default__dark` variants of the default preview,

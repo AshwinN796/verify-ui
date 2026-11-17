@@ -14,10 +14,29 @@ OrderSummaryCard: FAIL (example output from the sample app)
   [error] touch_target   default, ...       clickable 'Pay ₹160' (347x36dp) is smaller than 48x48dp.
 ```
 
+## Use it as a Gradle plugin
+
+```kotlin
+plugins {
+    id("io.github.ashwinn796.verify-ui") version "0.1.0"
+}
+```
+
+```
+./gradlew :app:verifyUi -Pcomposable=OrderSummaryCard
+```
+
+Full setup, configuration and task reference: [verify-ui-gradle-plugin/README.md](verify-ui-gradle-plugin/README.md).
+
 ## Use it with Claude Code
 
-1. Install the skill (copy `skills/ui-verify` into your project's `.claude/skills/`).
-2. In Claude Code: `/ui-verify OrderSummaryCard`
+1. Install the plugin in Claude Code:
+   ```
+   /plugin marketplace add AshwinN796/verify-ui
+   /plugin install verify-ui@ashwinn796
+   ```
+2. Ask for a composable: `/verify-ui:ui-verify OrderSummaryCard`
+   (or just say "verify how OrderSummaryCard looks").
 
 On the first run the skill adds one line to your module's `build.gradle.kts`:
 
@@ -35,6 +54,8 @@ looks at the images, fixes the code and repeats until it passes.
 ```
 ./gradlew :app:verifyUi -Pcomposable=OrderSummaryCard
 ```
+
+Modules with product flavors use the first `<flavor>Debug` variant; pick one with `-PverifyUiVariant=prodDebug`.
 
 Output: `app/build/verify-ui/OrderSummaryCard/` with a PNG and semantics dump per state,
 and `report.json`.
@@ -66,11 +87,18 @@ that is still a human review.
 
 ```
 verify-ui-gradle-plugin/   Gradle plugin: renderer runtime, checker, verifyUi task
-skills/ui-verify/          The Claude Code skill
+plugins/verify-ui/          Claude Code plugin with the /ui-verify skill
+.claude-plugin/            Marketplace catalog (lets /plugin marketplace add find the plugin)
 app/                       Sample app with planted UI bugs, used to test the tool
 tooling/eval/              Answer key for the planted bugs
 ```
 
 ## Status
 
-Early prototype. Not yet published: the sample uses the plugin via `includeBuild`.
+Early prototype (0.1.0). On the sample's 11 planted bugs the checker finds 10 with no false positives;
+the agent loop fixed all planted bugs on two screens in a clean test (see `tooling/eval/`).
+The Gradle plugin is pending publication on the Gradle Plugin Portal; until then the sample uses it via `includeBuild`.
+
+## License
+
+MIT

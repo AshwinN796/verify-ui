@@ -62,6 +62,35 @@ In the composable's file, add or update one `@Preview` per state, named
 | `<Name>EmptyPreview`                 | empty lists, if any List parameter             |
 | `<Name>ManyItemsPreview`             | 20+ items, if any List parameter               |
 | `<Name>LoadingPreview` / `ErrorPreview` / one per UI-state subtype | if the composable has a UI state |
+| `<Name><Parameter>Preview` | one per state-driving parameter, derived from the parameter list (see below) |
+| `<Name>AllOnPreview` | every Boolean parameter changed at once |
+
+Control states come from the composable's parameters, not from names you recognise. List every
+parameter and derive the states from its type:
+
+| Parameter | States to preview |
+|-----------|-------------------|
+| `Boolean` | the opposite of its default (or `false` if it has none) as one preview with only that parameter changed |
+| enum / sealed type | one preview per value or subtype |
+| nullable (`String?`, `Icon?`) | one with `null`, one with a value |
+| lambda | pass `{}`; not a state |
+
+Name each preview from the parameter, dropping `is`/`has`/`show` prefixes:
+`isSelected` -> `<Name>SelectedPreview`, `termsChecked` -> `<Name>TermsCheckedPreview`,
+`enabled = false` -> `<Name>DisabledPreview`.
+
+- One preview per parameter with only that parameter changed from the baseline.
+- One `<Name>AllOnPreview` with every Boolean parameter changed at once.
+- Add a pair only when the source shows one parameter changing how another renders (read the body:
+  a parameter used in `alpha`, `enabled =` or a color choice that another state also drives).
+  `enabled = false` is the usual one: `<Name>DisabledSelectedPreview`.
+- Never write the full cross-product. With more than about 6 changed parameters, write only the
+  baseline, each alone and all-on, and say in the final report that pairs were skipped.
+- Parameters that carry data, not state (`title`, `description`, ids), are covered by the long-text
+  and empty/many previews, not here.
+- Look at each state's render for what the semantics cannot tell you: a state that looks different
+  but has no label (an empty dot), a selected state that does not change color, text that clips
+  only in that state. Name the parameter and state in the finding.
 
 Rules:
 - Wrap each in the app theme and a `Surface`, the way the app's Scaffold hosts it:

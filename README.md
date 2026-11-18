@@ -60,6 +60,19 @@ Modules with product flavors use the first `<flavor>Debug` variant; pick one wit
 Output: `app/build/verify-ui/OrderSummaryCard/` with a PNG and semantics dump per state,
 and `report.json`.
 
+## Who writes the previews
+
+The plugin renders the `@Preview`s that exist. It does not invent states.
+
+| How you use it | Who writes the state previews |
+|----------------|-------------------------------|
+| `/ui-verify` (Claude Code skill) | The agent. It reads the composable's parameters and adds one preview per state-driving parameter (each Boolean flipped, each enum or sealed value, null and non-null), an all-on preview, and pairs where one parameter changes how another renders. You write nothing. |
+| Gradle plugin only (`./gradlew verifyUi`) | You. With one preview you get one state, plus the `font_2x`, `rtl` and `dark` variants of `default`. Write a preview per state you care about. |
+
+Control states must come in as parameters (`isSelected`, `termsChecked`, `enabled`); state held
+inside the composable with `remember` cannot be reached by a preview. Rendering after clicking each
+control, with no extra previews needed, is planned (see `docs/specs/interaction-previews.md`).
+
 ## What it checks
 
 | Rule               | Catches                                                        |
@@ -91,6 +104,7 @@ plugins/verify-ui/          Claude Code plugin with the /ui-verify skill
 .claude-plugin/            Marketplace catalog (lets /plugin marketplace add find the plugin)
 app/                       Sample app with planted UI bugs, used to test the tool
 tooling/eval/              Answer key for the planted bugs
+docs/progress/             Project status, plan, open issues and session logs
 ```
 
 ## Status

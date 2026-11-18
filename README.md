@@ -18,7 +18,7 @@ OrderSummaryCard: FAIL (example output from the sample app)
 
 ```kotlin
 plugins {
-    id("io.github.ashwinn796.verify-ui") version "0.2.0"
+    id("io.github.ashwinn796.verify-ui") version "0.2.1"
 }
 ```
 
@@ -42,7 +42,7 @@ On the first run the skill adds one line to your module's `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("io.github.ashwinn796.verify-ui") version "0.2.0"
+    id("io.github.ashwinn796.verify-ui") version "0.2.1"
 }
 ```
 
@@ -85,6 +85,7 @@ control, with no extra previews needed, is planned (see `docs/specs/interaction-
 | `missing_label`    | Clickables with no text or contentDescription                  |
 | `collapsed`        | Elements squeezed to zero size (e.g. a missing `weight`)       |
 | `text_clipped`     | Text cut off by a fixed height/width, usually at large font    |
+| `text_clipped_silent` | Text cut by `maxLines` with no ellipsis, so the end is lost |
 | `text_truncated`   | Ellipsized text (warning)                                      |
 | `toggle_semantics` | Rows that toggle a switch but expose no role or state          |
 | `rtl_not_mirrored` | Layouts that stay left-aligned in RTL                          |
@@ -113,7 +114,7 @@ docs/progress/             Project status, plan, open issues and session logs
 
 ## Status
 
-Early prototype (0.2.0). On the sample's 11 planted bugs the checker finds 10 with no false positives;
+Early prototype (0.2.1). On the sample's 11 planted bugs the checker finds 10 with no false positives;
 the agent loop fixed all planted bugs on two screens in a clean test (see `tooling/eval/`).
 ## License
 

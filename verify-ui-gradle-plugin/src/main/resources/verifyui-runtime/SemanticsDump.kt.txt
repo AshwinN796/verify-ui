@@ -55,7 +55,11 @@ object SemanticsDump {
                 // so record geometry instead: what the text needs vs. what it was given.
                 val neededW = (0 until r.lineCount).maxOfOrNull { r.getLineRight(it) } ?: 0f
                 val neededH = r.multiParagraph.height
+                // True when maxLines dropped lines of text. With overflow = Clip (the default) the tail
+                // disappears with no ellipsis, so neither `ellipsized` nor needed-vs-given sees it.
+                val exceededMaxLines = r.multiParagraph.didExceedMaxLines
                 f += "\"textLayout\":{\"lines\":${r.lineCount},\"ellipsized\":$ellipsized," +
+                    "\"exceededMaxLines\":$exceededMaxLines," +
                     "\"needed\":[${dp(neededW, d)},${dp(neededH, d)}]," +
                     "\"given\":[${dp(r.size.width.toFloat(), d)},${dp(r.size.height.toFloat(), d)}]}"
             }

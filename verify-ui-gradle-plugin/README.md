@@ -14,7 +14,7 @@ In the `build.gradle.kts` of an Android application or library module that uses 
 ```kotlin
 plugins {
     id("com.android.application") // or com.android.library
-    id("io.github.ashwinn796.verify-ui") version "0.2.0"
+    id("io.github.ashwinn796.verify-ui") version "0.2.1"
 }
 ```
 
@@ -63,6 +63,7 @@ The task never reports "up to date"; it re-renders on every run.
 | `missing_label`    | Clickables with no text or contentDescription                  |
 | `collapsed`        | Elements squeezed to zero size (e.g. a missing `weight`)       |
 | `text_clipped`     | Text cut off by a fixed height/width, usually at large font    |
+| `text_clipped_silent` | Text cut by `maxLines` with no ellipsis, so the end is lost |
 | `text_truncated`   | Ellipsized text (warning)                                      |
 | `toggle_semantics` | Rows that toggle a switch but expose no role or state          |
 | `rtl_not_mirrored` | Layouts that stay left-aligned in RTL                          |

@@ -36,6 +36,8 @@ object Checker {
             "put Modifier.weight(1f) on the flexible text instead of on a Spacer.",
         "text_clipped" to "Text needs more space than it was given. Replace fixed height()/width() on the text or its " +
             "parent with heightIn(min = ...) / widthIn(...) so it can grow with font scale.",
+        "text_clipped_silent" to "maxLines cut the text and there is no ellipsis, so users lose the end silently. " +
+            "Set overflow = TextOverflow.Ellipsis, allow more lines, or remove maxLines.",
         "text_truncated" to "Text is ellipsized. Allow more lines (maxLines) or confirm truncation is intended.",
         "toggle_semantics" to "The row toggles a switch/checkbox but exposes no role or state. Replace .clickable with " +
             "Modifier.toggleable(value = checked, role = Role.Switch, onValueChange = ...) and pass onCheckedChange = null to the Switch.",
@@ -48,7 +50,7 @@ object Checker {
 
     // ------------------------------------------------------------------ model
 
-    class TextLayout(val lines: Int, val ellipsized: Boolean, val needed: DoubleArray?, val given: DoubleArray?)
+    class TextLayout(val lines: Int, val ellipsized: Boolean, val exceededMaxLines: Boolean, val needed: DoubleArray?, val given: DoubleArray?)
 
     class Node(
         val id: Int,
@@ -210,6 +212,10 @@ object Checker {
                     out += finding("text_clipped", "error", d, n,
                         "Text '${n.text}' needs ${fmt(nw)}x${fmt(nh)}dp but got ${fmt(gw)}x${fmt(gh)}dp.")
                 }
+            }
+            if (tl?.exceededMaxLines == true && !tl.ellipsized) {
+                out += finding("text_clipped_silent", "error", d, n,
+                    "Text '${n.text}' is cut off after ${tl.lines} line(s) with no ellipsis; the rest of the text is lost.")
             }
             if (tl?.ellipsized == true) {
                 out += finding("text_truncated", "warning", d, n,
@@ -385,6 +391,7 @@ object Checker {
                 TextLayout(
                     lines = (t["lines"] as Number).toInt(),
                     ellipsized = t["ellipsized"] == true,
+                    exceededMaxLines = t["exceededMaxLines"] == true,
                     needed = (t["needed"] as List<Any?>?)?.map { (it as Number).toDouble() }?.toDoubleArray(),
                     given = (t["given"] as List<Any?>?)?.map { (it as Number).toDouble() }?.toDoubleArray(),
                 )

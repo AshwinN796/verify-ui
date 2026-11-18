@@ -27,12 +27,12 @@ Find the module that contains the composable (the one with `com.android.applicat
 ```kotlin
 plugins {
     // ...existing plugins
-    id("io.github.ashwinn796.verify-ui") version "0.2.0"
+    id("io.github.ashwinn796.verify-ui") version "0.2.1"
 }
 ```
 
 If the project uses a version catalog, add it there instead
-(`verifyui = { id = "io.github.ashwinn796.verify-ui", version = "0.2.0" }` and `alias(libs.plugins.verifyui)`).
+(`verifyui = { id = "io.github.ashwinn796.verify-ui", version = "0.2.1" }` and `alias(libs.plugins.verifyui)`).
 Make sure `settings.gradle.kts` `pluginManagement.repositories` contains `gradlePluginPortal()`.
 
 Requirements to check, and tell the user if one is missing:

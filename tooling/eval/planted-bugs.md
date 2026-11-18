@@ -17,6 +17,7 @@ A run passes when every bug is reported, with no false positive on the controls.
 | SR-1 | SettingsRow      | font_2x          | Fixed 56dp row height clips text                            | `visualOverflow: true` or unclipped > clipped bounds on texts           |
 | SR-2 | SettingsRow      | long_text/font_2x| Description is single-line ellipsized                       | `ellipsized: true` on description                                       |
 | SR-3 | SettingsRow      | all              | Row is clickable with no Role/toggle state                  | Not visible in semantics (Switch with null callback has no state). Visual review only; skill step 5 asks for it |
+| PB-1 | PromoBanner      | long_text        | Description has `maxLines = 1` with default `Clip` overflow, so the tail is cut with no ellipsis | `exceededMaxLines: true` and `ellipsized: false`; rule `text_clipped_silent`. Found on a real app (CouponCard) first |
 
 ## Controls (must NOT be flagged)
 
@@ -31,3 +32,4 @@ A run passes when every bug is reported, with no false positive on the controls.
 | 2   | 2026-11-10 | 10/11 | SR-3   | none |
 | 3   | 2026-11-10 | agent `/ui-verify SettingsRow`: fixed SR-1, SR-2, SR-3, report pass | - | **Invalid as an agent eval**: source still had `// PLANTED` comments naming the fix. Comments removed; rerun needed. Agent output kept in `runs/run3-agent-SettingsRow.kt` |
 | 4   | 2026-11-10 | agent, fresh session, no hints: SettingsRow SR-1..3 fixed (pass); OrderSummaryCard OS-1..5 + bonus Pay clip fixed | - | Checker FP: LazyColumn items scrolled out of view reported as `collapsed` (fixed: scroll-aware). Agent overreach: Column -> LazyColumn not asked for (skill now requires minimal fixes) |
+| 5   | 2026-11-18 | PB-1 found (`text_clipped_silent`, long_text only) | - | none on SettingsRow, UserRoleCard, OrderSummaryCard, ProfileHeader (no new findings) |

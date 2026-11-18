@@ -15,6 +15,7 @@
 local.properties
 /.idea
 /verify-ui-gradle-plugin/build
+/docs
 
 __pycache__/
 _to_delete/

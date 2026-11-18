@@ -49,6 +49,10 @@ plugins {
 Then it writes previews for the composable's states, renders them, reads the report,
 looks at the images, fixes the code and repeats until it passes.
 
+To pick up a newer version of the skill later, run `/plugin marketplace update ashwinn796`.
+In a flavored module, tell the agent which variant to use, or run
+`./gradlew :app:verifyUi -Pcomposable=<Name> -PverifyUiVariant=<flavor>Debug` yourself.
+
 ## Use it without an agent
 
 ```
@@ -111,8 +115,6 @@ docs/progress/             Project status, plan, open issues and session logs
 
 Early prototype (0.2.0). On the sample's 11 planted bugs the checker finds 10 with no false positives;
 the agent loop fixed all planted bugs on two screens in a clean test (see `tooling/eval/`).
-The Gradle plugin is pending publication on the Gradle Plugin Portal; until then the sample uses it via `includeBuild`.
-
 ## License
 
 MIT

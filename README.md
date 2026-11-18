@@ -18,7 +18,7 @@ OrderSummaryCard: FAIL (example output from the sample app)
 
 ```kotlin
 plugins {
-    id("io.github.ashwinn796.verify-ui") version "0.1.0"
+    id("io.github.ashwinn796.verify-ui") version "0.2.0"
 }
 ```
 
@@ -42,7 +42,7 @@ On the first run the skill adds one line to your module's `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("io.github.ashwinn796.verify-ui") version "0.1.0"
+    id("io.github.ashwinn796.verify-ui") version "0.2.0"
 }
 ```
 
@@ -109,7 +109,7 @@ docs/progress/             Project status, plan, open issues and session logs
 
 ## Status
 
-Early prototype (0.1.0). On the sample's 11 planted bugs the checker finds 10 with no false positives;
+Early prototype (0.2.0). On the sample's 11 planted bugs the checker finds 10 with no false positives;
 the agent loop fixed all planted bugs on two screens in a clean test (see `tooling/eval/`).
 The Gradle plugin is pending publication on the Gradle Plugin Portal; until then the sample uses it via `includeBuild`.
 

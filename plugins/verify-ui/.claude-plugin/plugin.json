@@ -1,6 +1,6 @@
 {
   "name": "verify-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Gives Claude eyes for Jetpack Compose: renders your @Previews in every state (2x font, RTL, dark), checks them for layout and accessibility bugs, and fixes them until they pass.",
   "author": {
     "name": "AshwinN796",

@@ -14,7 +14,7 @@ In the `build.gradle.kts` of an Android application or library module that uses 
 ```kotlin
 plugins {
     id("com.android.application") // or com.android.library
-    id("io.github.ashwinn796.verify-ui") version "0.1.0"
+    id("io.github.ashwinn796.verify-ui") version "0.2.0"
 }
 ```
 
